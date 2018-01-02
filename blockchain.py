@@ -35,7 +35,7 @@ class Blockchain:
         transaction = Transaction(sender, recipient, amount)
         self.current_transactions.append(transaction)
 
-        return self.last_block['index'] + 1
+        return self.last_block.index + 1
 
     @staticmethod
     def proof_of_work(last_proof):
@@ -52,7 +52,7 @@ class Blockchain:
             :param block: <dict> Block
             :return: <str>
         """
-
+        block = block.__dict__
         # To avoid inconsistent hashes, make sure that the Dictionary is Ordered
         block_string = json.dumps(block, sort_keys=True).encode()
         return hashlib.sha256(block_string).hexdigest()

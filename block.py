@@ -27,6 +27,6 @@ class Block:
         return self.proof
 
     @property
-    def pre_hash(self):
+    def prev_hash(self):
         return self.prev_hash
 
