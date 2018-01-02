@@ -1,17 +1,18 @@
 from block import Block
 from transaction import Transaction
+from proof_of_work import proof_of_work as p_of_w
 import json
 import hashlib
 
 
-class BlockChain:
+class Blockchain:
 
     def __init__(self):
         self.chain = []
         self.current_transactions = []
 
-        # Create the genesis block
-        self.new_block(previous_hash=1, proof=100)
+        # Genesis block creation
+        self.new_block(prev_hash=1, proof=100)
 
     def new_block(self, proof, prev_hash=None):
         index = len(self.chain) + 1
@@ -36,6 +37,10 @@ class BlockChain:
 
         return self.last_block['index'] + 1
 
+    @staticmethod
+    def proof_of_work(last_proof):
+        return p_of_w(last_proof)
+
     @property
     def last_block(self):
         return self.chain[-1]
@@ -43,12 +48,12 @@ class BlockChain:
     @staticmethod
     def hash(block):
         """
-        Creates a SHA-256 hash of a Block
-        :param block: <dict> Block
-        :return: <str>
+            Creates a SHA-256 hash of a Block
+            :param block: <dict> Block
+            :return: <str>
         """
 
-        # We must make sure that the Dictionary is Ordered, or we'll have inconsistent hashes
+        # To avoid inconsistent hashes, make sure that the Dictionary is Ordered
         block_string = json.dumps(block, sort_keys=True).encode()
         return hashlib.sha256(block_string).hexdigest()
 
