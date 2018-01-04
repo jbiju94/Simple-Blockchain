@@ -2,6 +2,8 @@ from uuid import uuid4
 from flask import Flask
 from flask import jsonify
 from flask import request
+import utils as utilities
+import json
 from blockchain import Blockchain
 
 app = Flask(__name__)
@@ -22,7 +24,7 @@ def mine():
 
     # We must receive a reward for finding the proof.
     blockchain.new_transaction(
-        sender="0",   # Current Node
+        sender="NETWORK",   # Current Node
         recipient=node_identifier,
         amount=1,
     )
@@ -30,7 +32,7 @@ def mine():
     # Forge the new Block by adding it to the chain
     previous_hash = blockchain.hash(last_block)
     block = blockchain.new_block(proof, previous_hash)
-
+    # transaction_list = utilities.get_all_transaction(block.transactions)
     response = {
         'message': "New Block Forged",
         'index': block.index,
@@ -60,7 +62,7 @@ def new_transaction():
 @app.route('/chain', methods=['GET'])
 def full_chain():
     response = {
-        'chain': blockchain.chain,
+        'chain': blockchain.full_chain,
         'length': len(blockchain.chain),
     }
     return jsonify(response), 200

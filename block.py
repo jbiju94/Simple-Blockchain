@@ -5,18 +5,18 @@ class Block:
     def __init__(self, index, proof, prev_hash=None):
         self.index = index
         self.timestamp = int(time.time())
-        self.transaction = []
+        self.transactions = []
         self.proof = proof
         self.prev_hash = prev_hash
 
-    def add_transaction(self, transaction):
-        self.transaction.append(transaction)
-
-    """Getters"""
-
     @property
     def transactions(self):
-        return self.transaction
+        return self.transactions
+
+    @transactions.setter
+    def transactions(self, transactions):
+        for transaction in transactions:
+            self.transactions.append(transaction.get_transaction())
 
     @property
     def index(self):

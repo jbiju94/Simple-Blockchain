@@ -8,5 +8,6 @@ class Transaction:
         self.amount = amount
 
     def get_transaction(self):
-        transaction = dict().update({"sender": self.sender, "recipient": self.recipient, "amount": self.amount})
-        return transaction
+        transaction = {}
+        transaction.update({"sender": self.sender, "recipient": self.recipient, "amount": self.amount})
+        return {"sender": self.sender, "recipient": self.recipient, "amount": self.amount}

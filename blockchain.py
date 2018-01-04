@@ -17,6 +17,7 @@ class Blockchain:
     def new_block(self, proof, prev_hash=None):
         index = len(self.chain) + 1
         block = Block(index, proof, prev_hash)
+        block.transactions = self.current_transactions
 
         # Reset the current list of transactions
         self.current_transactions = []
@@ -33,7 +34,7 @@ class Blockchain:
                :return: <int> The index of the Block that will hold this transaction
         """
         transaction = Transaction(sender, recipient, amount)
-        self.current_transactions.append(transaction)
+        self.current_transactions.append(transaction.get_transaction())
 
         return self.last_block.index + 1
 
@@ -44,6 +45,14 @@ class Blockchain:
     @property
     def last_block(self):
         return self.chain[-1]
+
+    @property
+    def full_chain(self):
+        block_chain = {}
+        for block in self.chain:
+            block_chain.update({block.index: block.__dict__})
+
+        return block_chain
 
     @staticmethod
     def hash(block):
